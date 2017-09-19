@@ -281,6 +281,7 @@ function PinchZoom(element, transformChanged, width, height, noInteraction) {
   this.lastTouchDown = 0;
   this.lastTouchDownPos = {x:-1, y:-1};
   this.minScale = 0;
+  this.locked = false;
 
   // if true, the map will always fill the screen, ie the user wont be able
   // to zoom out when either the full width or full height of the map is visible.
@@ -458,6 +459,10 @@ PinchZoom.prototype.handleMouseUp = function(event) {
 
 PinchZoom.prototype.handleMouseMove = function(event) {
   event.preventDefault();
+  if (this.locked) {
+    return;
+  }
+
   
   if (this.ongoingTouches.mouse) {
     this.ongoingTouches.mouse.currentViewerPos = Utils.eventPosInElementCoordinates(event, this.element);
@@ -471,6 +476,9 @@ PinchZoom.prototype.handleMouseMove = function(event) {
 
 PinchZoom.prototype.handleMouseWheel = function(event) {
   event.preventDefault();
+  if (this.locked) {
+    return;
+  }
   
   var viewerPos = Utils.eventPosInElementCoordinates(event, this.element);
   var constraints = [{
@@ -551,6 +559,10 @@ PinchZoom.prototype.handleEnd = function(event) {
 
 PinchZoom.prototype.handleMove = function(event) {
   event.preventDefault();
+  if (this.locked) {
+    return;
+  }
+
   var touches = event.touches;
   var constraints = [];
   for (var i = 0; i < touches.length; i++) {

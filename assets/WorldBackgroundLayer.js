@@ -257,4 +257,21 @@ WorldBackgroundLayer.prototype.draw = function(canvas, pinchZoom,
     );
   }
 
+  if (this.params.showRivers) {
+    var geoCenter = pinchZoom.viewerPosFromWorldPos({x: .5, y: .5});
+    var width = bboxBottomRight.x - bboxTopLeft.x;
+    var projection = d3.geoMercator()
+      .scale(canvas.width / (2 * Math.PI * width))
+      .translate([geoCenter.x, geoCenter.y]);
+
+    var path = d3.geoPath()
+      .projection(projection)
+      .context(context);
+
+    context.beginPath();
+    path(topojson.mesh(WorldBackgroundLayer.rivers));
+    context.strokeStyle = this.params.seaColor;
+    context.lineWidth = this.renderer.pixelRatio * 2;
+    context.stroke();
+  }
 };

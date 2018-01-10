@@ -919,7 +919,8 @@ CanvasTilesRenderer.prototype.getLocation = function() {
  * \param location the location in the format returned by getLocation().
  */
 CanvasTilesRenderer.prototype.setLocation = function(location) {
-  if (isNaN(location.x) || isNaN(location.y) || isNaN(location.scale)) {
+  if (isNaN(location.x) || isNaN(location.y) || isNaN(location.scale)
+      || location.scale <= 0) {
     throw(new Error('invalid location'));
   }
   var canvas = this.canvas;

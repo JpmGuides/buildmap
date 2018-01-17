@@ -930,9 +930,13 @@ CanvasTilesRenderer.prototype.setLocation = function(location) {
   ];
   var x_pos = canvas.width * ratio[0];
   var y_pos = canvas.height * ratio[1];
+
+  // To avoid the degenerate case of canvas.width == 0,
+  // we impose a minimum width of 2 pixels for scale computation.
+  var width = Math.max(2, canvas.width);
   var constraints = [
-    { viewer: {x: x_pos - canvas.width / 2, y: y_pos}, world: {x:location.x - location.scale /2, y: location.y} },
-    { viewer: {x: x_pos + canvas.width / 2, y: y_pos}, world: {x:location.x + location.scale /2, y: location.y} },
+    { viewer: {x: x_pos - width / 2, y: y_pos}, world: {x:location.x - location.scale /2, y: location.y} },
+    { viewer: {x: x_pos + width / 2, y: y_pos}, world: {x:location.x + location.scale /2, y: location.y} },
   ];
   this.location = location;
   this.pinchZoom.processConstraints(constraints);  
@@ -957,7 +961,6 @@ CanvasTilesRenderer.prototype.resizeCanvas = function(width, height) {
   if (this.disableResize) {
     return;
   }
-
   var canvas = this.canvas;
 
   // devicePixelRatio should tell us about the current zoom level.
@@ -1008,11 +1011,18 @@ CanvasTilesRenderer.prototype.draw = function() {
   if (this.inDraw) {
     return;
   }
+
+  ++this.numDraw;
+
+  var canvas = this.canvas;
+  if (canvas.clientWidth == 0 || canvas.clientHeight == 0) {
+    return;
+  }
+
   this.inDraw = true;
 
   var startTimestamp = new Date().getTime();
 
-  var canvas = this.canvas;
   var pinchZoom = this.pinchZoom;
   
   this.resizeCanvas();
@@ -1064,7 +1074,6 @@ CanvasTilesRenderer.prototype.draw = function() {
   }
   
   this.inDraw = false;
-  ++this.numDraw;
 
   var endTimestamp = new Date().getTime();
   var renderingTime = (endTimestamp - startTimestamp);

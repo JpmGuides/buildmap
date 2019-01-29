@@ -83,7 +83,9 @@ d3.labeler = function() {
     };
 }
 
-
+  areaOfBox = function(box) {
+    return (box.right - box.left) * (box.bottom - box.top);
+  };
 
   boxOverlapArea = function(box, box2) {
     var x_overlap = Math.max(0,
@@ -111,6 +113,12 @@ d3.labeler = function() {
 
       // penalty for length of leader line
       if (dist > 0) ener += dist * w_len;
+
+
+      // Penalty if box goes out of screen
+      ener += areaOfBox(box) - boxOverlapArea(
+                box,
+                { left: 0, top: 0, right: w, bottom: h });
 
       for (var i = 0; i < m; i++) {
         if (i != index) {

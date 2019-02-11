@@ -305,7 +305,7 @@ d3.labeler = function() {
       for (var i = 0; i < m; ++i) {
         sum += energy(i);
       }
-      console.log('acc: ' + acc + ', rej: ' + rej + ', energy: ' + sum);
+      //console.log('acc: ' + acc + ', rej: ' + rej + ', energy: ' + sum);
       return sum;
   };
 
@@ -324,7 +324,7 @@ d3.labeler = function() {
       }
     }
     lab = bestLabels.slice(0);
-    console.log('Final energy: ' + bestEnergy);
+    //console.log('Final energy: ' + bestEnergy);
     return bestEnergy;
   };
 

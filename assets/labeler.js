@@ -114,11 +114,11 @@ d3.labeler = function() {
       // penalty for length of leader line
       if (dist > 0) ener += dist * w_len;
 
-
       // Penalty if box goes out of screen
+      var margin = 15;
       ener += areaOfBox(box) - boxOverlapArea(
                 box,
-                { left: 0, top: 0, right: w, bottom: h });
+                { left: margin, top: margin, right: w - margin, bottom: h - margin });
 
       for (var i = 0; i < m; i++) {
         if (i != index) {
@@ -175,8 +175,8 @@ d3.labeler = function() {
       else {old_energy = energy(i)}
 
       // random translation
-      lab[i].x += (Math.random() - 0.5) * (w/8) * (currT + 0.1);
-      lab[i].y += (Math.random() - 0.5) * (h/8) * (currT + 0.1);
+      lab[i].x += (Math.random() - 0.5) * (w) * (currT + 0.1);
+      lab[i].y += (Math.random() - 0.5) * (h) * (currT + 0.1);
 
       // hard wall boundaries
       var box = boxOfLabel(i);

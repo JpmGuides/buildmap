@@ -146,15 +146,14 @@ d3.labeler = function() {
 
         // penalty for label-anchor overlap
         var r = anc[i].r + 1;
-        if (r > 1) {
-          var ancBox = {
-            left: anc[i].x - r,
-            right: anc[i].x + r,
-            top: anc[i].y - r,
-            bottom: anc[i].y + r
-          };
-          ener += boxOverlapArea(box, ancBox) * w_lab_anc;
-        }
+
+        var ancBox = {
+          left: anc[i].x - r,
+          right: anc[i].x + r,
+          top: anc[i].y - r,
+          bottom: anc[i].y + r
+        };
+        ener += boxOverlapArea(box, ancBox) * w_lab_anc;
 
       }
       return ener;
@@ -379,10 +378,6 @@ d3.labeler = function() {
 };
 
 d3.labeler.closestLineAnchorPoint = function(p, box) {
-    if (p.r <= 0) {
-      return { x: box.cx, y: box.cy };
-    }
-
     var candidates = [
       { x: box.cx, y: box.top },
       { x: box.cx, y: box.bottom },
